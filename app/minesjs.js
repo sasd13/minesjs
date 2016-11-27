@@ -97,13 +97,12 @@ function uncoverButtonBombs() {
 function displayGameOver() {
 	var node = getBody().childNodes[4];
 	var p = document.createElement('p');
-
-    p.textContent = "Game over... :-(";
 	
+	p.textContent = "Game over... :-(";
 	if (typeof(node) !== 'undefined' && node != null) {
-		getBody().replaceChild(p, node);	
+		getBody().replaceChild(p, node);
 	} else {
-		getBody().appendChild(p);	
+		getBody().appendChild(p);
 	}
 }
 
