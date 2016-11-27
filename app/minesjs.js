@@ -99,6 +99,7 @@ function displayGameOver() {
 	var p = document.createElement('p');
 	
 	p.textContent = "Game over... :-(";
+	
 	if (typeof(node) !== 'undefined' && node != null) {
 		getBody().replaceChild(p, node);
 	} else {
