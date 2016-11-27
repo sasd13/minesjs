@@ -25,7 +25,11 @@ function startGame() {
 }
 
 function buildGame() {
-    document.getElementsByTagName('body')[0].appendChild(buildTable());
+    getBody().appendChild(buildTable());
+}
+
+function getBody() {
+	return document.getElementsByTagName('body')[0];
 }
 
 function buildTable() {
@@ -52,7 +56,7 @@ function buildTd() {
     var td = document.createElement('td');
 
     td.appendChild(buildButton());
-    
+
     return td;
 }
 
@@ -67,7 +71,7 @@ function buildButton() {
         if (isButtonBomb(this)) {
             gameOver();
         } else {
-            countNeighborsBombs(this);
+            setCountNeighborsBombs(this);
         }
     });
 
@@ -79,20 +83,31 @@ function isButtonBomb(button) {
 }
 
 function gameOver() {
-    for (var i = 0; i < buttonBombs.length; i++) {
-        if (isButtonBomb(buttonBombs[i])) {
-            buttonBombs[i].textContent = CONSTANTS.BUTTON_TEXT_BOMB;
-            buttonBombs[i].setAttribute('class', CONSTANTS.BUTTON_CLASS_BOMB);
-        }
-    }
-
-    var p = document.createElement('p');
-
-    p.textContent = "Game over... :-(";
-    document.getElementsByTagName('body')[0].appendChild(p);
+	uncoverButtonBombs();
+    displayGameOver();
 }
 
-function countNeighborsBombs(button) {
+function uncoverButtonBombs() {
+	for (var i = 0; i < buttonBombs.length; i++) {
+        buttonBombs[i].textContent = CONSTANTS.BUTTON_TEXT_BOMB;
+        buttonBombs[i].setAttribute('class', CONSTANTS.BUTTON_CLASS_BOMB);
+    }
+}
+
+function displayGameOver() {
+	var node = getBody().childNodes[4];
+	var p = document.createElement('p');
+
+    p.textContent = "Game over... :-(";
+	
+	if (typeof(node) !== 'undefined' && node != null) {
+		getBody().replaceChild(p, node);	
+	} else {
+		getBody().appendChild(p);	
+	}
+}
+
+function setCountNeighborsBombs(button) {
     var neighbors = [];
     var count_neighbors_bombs = appendNeighbors(button, neighbors);
 
@@ -102,7 +117,7 @@ function countNeighborsBombs(button) {
 
     if (count_neighbors_bombs === 0) {
         for (var i = 0; i < neighbors.length; i++) {
-            countNeighborsBombs(neighbors[i]);
+            setCountNeighborsBombs(neighbors[i]);
         }
     }
 }
@@ -136,10 +151,11 @@ function appendAllCounsins(button, array) {
 }
 
 function appendCousins(button, array, previous) {
-    var id = parseInt(button.getAttribute('id'));
-    var cousin = previous ? document.getElementById(id - CONSTANTS.MAX_TDS) : document.getElementById(id + CONSTANTS.MAX_TDS);
+    var cousinId = previous ? parseInt(button.getAttribute('id')) - CONSTANTS.MAX_TDS : parseInt(button.getAttribute('id')) + CONSTANTS.MAX_TDS;
 
-    if (typeof(cousin) !== 'undefinded' && cousin != null) {
+    if (cousinId > 0 && cousinId <= countButtons) {
+		var cousin = document.getElementById(cousinId);
+		
         if (cousin.getAttribute('disabled') != 'disabled') {
             array.push(cousin);
         }
