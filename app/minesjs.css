@@ -1,20 +1,20 @@
 .button {
-    width: 50px;
-    height: 50px;
-    text-align: center;
+	width: 50px;
+	height: 50px;
+	text-align: center;
 }
 
 .inherit {
-    color: black;
-    background-color: inherit;
+	color: black;
+	background-color: inherit;
 }
 
 .green {
-    color: white;
-    background-color: green;
+	color: white;
+	background-color: green;
 }
 
 .red {
-    color: white;
-    background-color: red;
+	color: white;
+	background-color: red;
 }
